@@ -10,16 +10,13 @@ sudo yum install libboost-all-dev (for C++ binding and unit test)
 sudo yum install build-essential python-pip python-smbus
 ```
 
-## Clone the git repository
+## Install driver
 ```
-mkdir libftdi
-cd libftdi
 git clone git://developer.intra2net.com/libftdi
 ```
 
 If you are building the release tar ball, just extract the source tar ball.
 
-## Build the git source and install
 ```
 cd libftdi
 mkdir build
@@ -38,7 +35,7 @@ sudo python setup.py install
 
 ## Add udev rule and add yourself to group
 ```
-sudo echo SUBSYSTEM=="usb", ATTR{idProduct}=="6014", ATTR{idVendor}=="0403", MODE:="06660", GROUP:="dialout" > /etc/udev/rules.d/52-xilinx-ftdi-usb.rules
+sudo "echo SUBSYSTEM==\"usb\", ATTR{idProduct}==\"6014\", ATTR{idVendor}==\"0403\", MODE:=\"06660\", GROUP:=\"dialout\"" > /etc/udev/rules.d/99-ftdi-usb.rules
 sudo usermod -a -G dialout $USER
 ```
 
