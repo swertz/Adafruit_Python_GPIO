@@ -798,6 +798,24 @@ class I2CDevice(object):
         response = self._transaction_end()
         self._verify_acks(response)
 
+    def write_lpGBT(self, register, value):
+        """Write lpGBT."""
+        value = value & 0xFF
+        register_low = register & 0xFF
+        register_high = (register >> 8) & 0xFF
+       # value_low  = value & 0xFF
+      #  data = (value >> 8) & 0xFF
+      #  if not little_endian:
+      #      value_low, value_high = value_high, value_low
+        self._idle()
+        self._transaction_start()
+        self._i2c_start()
+        self._i2c_write_bytes([self._address_byte(False), register_low, register_high,
+                                value])
+        self._i2c_stop()
+        response = self._transaction_end()
+        self._verify_acks(response)
+
     def writeList(self, register, data):
         """Write bytes to the specified register."""
         self._idle()
@@ -848,6 +866,22 @@ class I2CDevice(object):
         self._transaction_start()
         self._i2c_start()
         self._i2c_write_bytes([self._address_byte(False), register])
+        self._i2c_stop()
+        self._i2c_idle()
+        self._i2c_start()
+        self._i2c_write_bytes([self._address_byte(True)])
+        self._i2c_read_bytes(1)
+        self._i2c_stop()
+        response = self._transaction_end()
+        self._verify_acks(response[:-1])
+        return response[-1]
+
+    def read_lpGBT(self, register):
+        """Read an unsigned byte from the specified register."""
+        self._idle()
+        self._transaction_start()
+        self._i2c_start()
+        self._i2c_write_bytes([self._address_byte(False), register & 0xFF, (register>>8) & 0xFF])
         self._i2c_stop()
         self._i2c_idle()
         self._i2c_start()

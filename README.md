@@ -1,3 +1,48 @@
+lpGBT install
+=============
+
+```
+sudo yum install doxygen
+sudo yum install libusb-devel
+sudo yum install libconfuse-dev (for ftdi-eeprom)
+sudo yum install swig python-dev (for python bindings)
+sudo yum install libboost-all-dev (for C++ binding and unit test)
+sudo yum install build-essential python-pip python-smbus
+```
+
+## Clone the git repository
+```
+mkdir libftdi
+cd libftdi
+git clone git://developer.intra2net.com/libftdi
+```
+
+If you are building the release tar ball, just extract the source tar ball.
+
+## Build the git source and install
+```
+cd libftdi
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX="/usr/" -DPYTHON_INCLUDE_DIR="/usr/include/python2.7" -DPYTHON_LIBRARIES="/usr/lib/python2.7/" ../ 
+make
+sudo make install
+```
+
+## Install this library
+```
+git clone --single-branch --branch lpGBT https://github.com/swertz/Adafruit_Python_GPIO.git
+cd Adafruit_Python_GPIO
+sudo python setup.py install
+```
+
+## Add udev rule and add yourself to group
+```
+sudo echo SUBSYSTEM=="usb", ATTR{idProduct}=="6014", ATTR{idVendor}=="0403", MODE:="06660", GROUP:="dialout" > /etc/udev/rules.d/52-xilinx-ftdi-usb.rules
+sudo usermod -a -G dialout $USER
+```
+
+
 !!!Deprecation Warning!!!
 ===================
 This library has been deprecated in favor of [our python3 Blinka library](https://github.com/adafruit/Adafruit_Blinka). We have replaced all of the libraries that use this repo with CircuitPython libraries that are Python3 compatible, and support a [wide variety of single board/linux computers](https://circuitpython.org/blinka)!
