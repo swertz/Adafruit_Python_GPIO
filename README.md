@@ -38,7 +38,7 @@ sudo python setup.py install
 sudo "echo SUBSYSTEM==\"usb\", ATTR{idProduct}==\"6014\", ATTR{idVendor}==\"0403\", MODE:=\"06660\", GROUP:=\"dialout\"" > /etc/udev/rules.d/99-ftdi-usb.rules
 sudo usermod -a -G dialout $USER
 ```
-
+You then probably need to reboot.
 
 !!!Deprecation Warning!!!
 ===================
